@@ -49,7 +49,7 @@ int main()
     }while(j<qtd_ver && n!=-2);
 
     do{
-        printf("\nDigite o vertice origem do percurso: ",j);
+        printf("\nDigite o vertice origem do percurso: ");
         scanf(" %d",&n);
     }while(n<0 || n>=qtd_ver);
 

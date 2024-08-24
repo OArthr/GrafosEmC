@@ -63,7 +63,7 @@ void visitaVer(Lista* grafo[],int v,int marca[]){
         if(marca[u->vn]==0){
             printf("Visitou v%-2d\n",u->vn);
             marca[u->vn]=1;
-            visitaqtd_ver(grafo,u->vn,marca);
+            visitaVer(grafo,u->vn,marca);
         }
         u = u->prox;
     }
