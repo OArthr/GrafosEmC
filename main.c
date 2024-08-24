@@ -57,4 +57,6 @@ int main()
     percursoRec(grafo,qtd_ver,n);
     printf("\n\tPercurso iterativo\n");
     percursoIte(grafo,qtd_ver,n);
+
+    system("pause");
 }
