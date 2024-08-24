@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1724527598 source:c:\users\arthur\documents\codeblocks\algemgrafos\main.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
+1724527421 c:\users\arthur\documents\codeblocks\algemgrafos\lista.h
+
+1724527514 source:c:\users\arthur\documents\codeblocks\algemgrafos\lista.c
+	<stdio.h>
+	<stdlib.h>
+	"lista.h"
+
