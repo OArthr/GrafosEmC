@@ -7,11 +7,16 @@ typedef struct elemento{
     struct elemento* prox;
 }Elemento;
 
+
+
 Lista* criar(){
     Lista* ldse;
     ldse = (Lista*)malloc(sizeof(Lista));
-    if (ldse)
-        *ldse = NULL;
+    if (ldse){
+        ldse->ini = NULL;
+        ldse->fim = NULL;
+    }
+
     return ldse;
 }
 
@@ -22,16 +27,38 @@ int insIni(Lista* ldse, int n){
     if(!novo)
         return 0;
     novo->vn = n;
-    novo->prox = *ldse;
-    *ldse = novo;
+    novo->prox = ldse->ini;
+    if (!ldse->fim)
+        ldse->fim = novo;
+    ldse->ini = novo;
+    return 1;
+}
+
+int insFim(Lista* ldse, int n){
+    if (!ldse)
+        return 0;
+    Elemento* novo = (Elemento*)malloc(sizeof(Elemento));
+    if(!novo)
+        return 0;
+    novo->vn = n;
+    novo->prox = NULL;
+    if (!ldse->fim)
+        ldse->ini = novo;
+    else
+        ldse->fim->prox = novo;
+    ldse->fim = novo;
     return 1;
 }
 
 int remIni(Lista* ldse){
-    if(!ldse)
+    if(!ldse || !ldse->ini)
         return 0;
-    Elemento* aux = *ldse;
-    *ldse = aux->prox;
+
+    Elemento* aux = ldse->ini;
+    ldse->ini = ldse->ini->prox;
+    if(!ldse->ini)
+        ldse->fim = NULL;
+
     free(aux);
     return 1;
 }
@@ -39,7 +66,7 @@ int remIni(Lista* ldse){
 int printList(Lista* ldse){
     if(!ldse)
         return 0;
-    Elemento* aux = *ldse;
+    Elemento* aux = ldse->ini;
     printf(" -> ");
     while(aux){
         printf("v%-2d -> ",aux->vn);
@@ -50,15 +77,15 @@ int printList(Lista* ldse){
 }
 
 int acessPrim(Lista* ldse, int* vn){
-    if(!ldse || !(*ldse))
+    if(!ldse || !ldse->ini)
         return 0;
 
-    *vn = (*ldse)->vn;
+    *vn = ldse->ini->vn;
     return 1;
 }
 
 void visitaVer(Lista* grafo[],int v,int marca[]){
-    Elemento* u = *(grafo[v]);
+    Elemento* u = grafo[v]->ini;
     while(u){
         if(marca[u->vn]==0){
             printf("Visitou v%-2d\n",u->vn);
@@ -103,22 +130,22 @@ int percursoIte(Lista* grafo[],int qtd_ver, int v){
     insIni(pilha,v);
     printf("Visitou v%-2d\n",v);
 
-    int topo=0;
-    while(*pilha){
-        acessPrim(pilha,&topo);
-        Elemento* u = *(grafo[topo]);
-        while(u && marca[u->vn]!=0)
-            u = u->prox;
-        if(!u){
-            printf("Percorreu v%-2d\n",topo);
-            marca[topo]=2;
-            remIni(pilha);
+    int u=0;
+    while(pilha->ini){
+        acessPrim(pilha,&u);
+        remIni(pilha);
+        Elemento* w = grafo[u]->ini;
+
+        while(w){
+            if (marca[w->vn]==0){
+                printf("Visitou v%-2d\n",w->vn);
+                marca[w->vn]=1;
+                insIni(pilha,w->vn);
+            }
+            w=w->prox;
         }
-        else{
-            printf("Visitou v%-2d\n",u->vn);
-            marca[topo]=1;
-            insIni(pilha,u->vn);
-        }
+        marca[u]=2;
+        printf("Percorreu v%-2d\n",u);
     }
     /*
     for(int i=0;i<qtd_ver;i++)
